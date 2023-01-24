@@ -1,16 +1,10 @@
-# product_db
 
-A new Flutter project.
 
-## Getting Started
+Out of stock product listing along with database and timer.
 
-This project is a starting point for a Flutter application.
+<img src="https://user-images.githubusercontent.com/111557931/214341380-b49b512e-6529-42cd-b3c9-fc535edd6d11.mp4" style=" height:550; " data-target="animated-image.originalImage">
 
-A few resources to get you started if this is your first Flutter project:
+<img src="https://user-images.githubusercontent.com/111557931/214341380-b49b512e-6529-42cd-b3c9-fc535edd6d11.mp4" style=" height:550px; " data-target="animated-image.originalImage">
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+
