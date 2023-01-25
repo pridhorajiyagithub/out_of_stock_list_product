@@ -7,9 +7,7 @@ import '../model/product.dart';
 
 class ProductProvider extends ChangeNotifier {
   List<Product> products = [];
-
   get totalQuantity => products.length;
-
   get totalPrice {
     int price = 0;
 

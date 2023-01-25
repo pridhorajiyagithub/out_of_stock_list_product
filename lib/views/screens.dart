@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:image_picker/image_picker.dart';
@@ -20,7 +19,6 @@ class _MyAppState extends State<MyApp> {
   final ImagePicker picker = ImagePicker();
   late Future<List<Product>> getAllStudents;
   final GlobalKey<FormState> insertFormKey = GlobalKey<FormState>();
-
   final TextEditingController nameController = TextEditingController();
 
   final TextEditingController priceController = TextEditingController();
@@ -37,6 +35,8 @@ class _MyAppState extends State<MyApp> {
   int lenght = 0;
   int second = 30;
   Timer? timer;
+  List<Product> isTR = [];
+  List<Product> isFL = [];
   int IsSecond() {
     timer = Timer.periodic(Duration(seconds: 2), (_) {
       setState(() {
@@ -45,17 +45,16 @@ class _MyAppState extends State<MyApp> {
     });
     return second;
   }
-/*
-  IsTimer(int id) {
+/*  IsTimer(int id) {
     Timer(
-      Duration(seconds: 30),
+      Duration(seconds: 20),
       () {
         setState(() {
           ++seconds;
-          */ /*   if (seconds == 5) {
+              if (seconds == 5) {
             quantity = 0;
             print(quantity);
-          }*/ /*
+          }
         });
         //    DBHelper.dbHelper.deleteRecord(id: id);
       },
@@ -77,11 +76,13 @@ class _MyAppState extends State<MyApp> {
       appBar: AppBar(
         title: const Text("Out of Stock List of Product"),
         centerTitle: true,
-        leading: Center(child: Text("${second}")),
+        leading: Center(
+          child: Text("$second"),
+        ),
         actions: [
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: [Text("$lenght"), Icon(Icons.add_shopping_cart)],
+            children: [Text("$lenght"), const Icon(Icons.add_shopping_cart)],
           )
         ],
       ),
@@ -107,8 +108,35 @@ class _MyAppState extends State<MyApp> {
                       return Card(
                         elevation: 3,
                         child: ListTile(
-                          onTap: () {
-                            setState(() async {});
+                          onTap: () async {
+                            int a = IsSecond();
+                            if (data[i].isTrue == false && a <= 20) {
+                              print("done");
+                              int resId = await Provider.of<ProductProvider>(
+                                      context,
+                                      listen: false)
+                                  .updateRecord(
+                                      quantity: 0,
+                                      name: data[i].name,
+                                      id: data[i].id!,
+                                      price: data[i].price);
+
+                              if (resId == 1) {
+                                print("----------------------------");
+                                print("Recorded update successfully");
+                                print("----------------------------");
+
+                                getAllStudents = Provider.of<ProductProvider>(
+                                        context,
+                                        listen: false)
+                                    .fetchAllRecords();
+                              } else {
+                                print("----------------------------");
+
+                                print("Recorded deletion failed.....");
+                                print("----------------------------");
+                              }
+                            }
                           },
 
                           /*leading: (result != "")
@@ -134,33 +162,28 @@ class _MyAppState extends State<MyApp> {
                                   });
                                   //IsTimer(data[i].id!);
                                   data[i].isTrue = true;
+                                  int a = IsSecond();
                                   print(data[i].isTrue);
-                                  if (data[i].isTrue == true) {
+                                  if (data[i].isTrue == true && a <= 20) {
+                                    print("done");
                                     showDialog(
                                       context: context,
                                       builder: (context) {
                                         return AlertDialog(
-                                          title: const Text("update Record's"),
+                                          title: const Text("change Record's"),
                                           content: const Text(
-                                            "Are you sure to update the record?",
+                                            "Are you sure to change the quality?",
                                           ),
                                           actions: [
                                             ElevatedButton(
                                                 onPressed: () async {
-                                                  /*  int resId = await DBHelper
-                                                      .dbHelper
-                                                      .updateRecord(
-                                                          name: data[i].name,
-                                                          price: data[i].price,
-                                                          image: data[i].image,
-                                                          quantity: 0,
-                                                          id: data[i].id!);*/
                                                   int resId = await Provider.of<
                                                               ProductProvider>(
                                                           context,
                                                           listen: false)
                                                       .updateRecord(
-                                                          quantity: 0,
+                                                          quantity:
+                                                              data[i].quantity,
                                                           name: data[i].name,
                                                           id: data[i].id!,
                                                           price: data[i].price);
@@ -173,16 +196,11 @@ class _MyAppState extends State<MyApp> {
                                                     print(
                                                         "----------------------------");
 
-                                                    setState(
-                                                      () {
-                                                        getAllStudents = Provider
-                                                                .of<ProductProvider>(
-                                                                    context,
-                                                                    listen:
-                                                                        false)
-                                                            .fetchAllRecords();
-                                                      },
-                                                    );
+                                                    getAllStudents = Provider
+                                                            .of<ProductProvider>(
+                                                                context,
+                                                                listen: false)
+                                                        .fetchAllRecords();
                                                   } else {
                                                     print(
                                                         "----------------------------");
@@ -193,7 +211,8 @@ class _MyAppState extends State<MyApp> {
                                                         "----------------------------");
                                                   }
                                                 },
-                                                child: const Text("update")),
+                                                child:
+                                                    const Text("Add to cart")),
                                             ElevatedButton(
                                                 onPressed: () {
                                                   Navigator.of(context).pop();
@@ -223,10 +242,6 @@ class _MyAppState extends State<MyApp> {
                                         actions: [
                                           ElevatedButton(
                                               onPressed: () async {
-                                                /*  int resId = await DBHelper
-                                                    .dbHelper
-                                                    .deleteRecord(
-                                                        id: data[i].id!);*/
                                                 int resId = await Provider.of<
                                                             ProductProvider>(
                                                         context,
@@ -242,18 +257,11 @@ class _MyAppState extends State<MyApp> {
                                                   print(
                                                       "----------------------------");
 
-                                                  setState(
-                                                    () {
-                                                      /*  getAllStudents = DBHelper
-                                                          .dbHelper
-                                                          .fetchAllRecords();*/
-                                                      getAllStudents = Provider
-                                                              .of<ProductProvider>(
-                                                                  context,
-                                                                  listen: false)
-                                                          .fetchAllRecords();
-                                                    },
-                                                  );
+                                                  getAllStudents = Provider.of<
+                                                              ProductProvider>(
+                                                          context,
+                                                          listen: false)
+                                                      .fetchAllRecords();
                                                 } else {
                                                   print(
                                                       "----------------------------");
@@ -403,7 +411,6 @@ class _MyAppState extends State<MyApp> {
 
                   setState(
                     () {
-                      /* getAllStudents = DBHelper.dbHelper.fetchAllRecords();*/
                       getAllStudents =
                           Provider.of<ProductProvider>(context, listen: false)
                               .fetchAllRecords();

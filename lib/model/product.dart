@@ -24,7 +24,7 @@ class Product {
       price: data['price'],
       quantity: data['quantity'],
       image: data['image'],
-      isTrue: data['isTrue'],
+      isTrue: (data['isTrue'] == false) ? false : true,
     );
   }
 }
